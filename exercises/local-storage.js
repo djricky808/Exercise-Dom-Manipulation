@@ -38,3 +38,47 @@
  */
 
 // Your code goes here...
+const container = document.querySelector('.cardsContainer');
+
+function redCard (elm) {
+  for(elm of container.children){
+    if (localStorage.getItem('favs') && localStorage.getItem('favs').split(',').includes(elm.id)) {
+      elm.style.backgroundColor = 'red';
+      elm.dataset.fav = 'true';
+    }
+    
+  }
+}
+
+redCard ();
+
+const addId = (id) => {
+  let favorites = localStorage.getItem('favs');
+  favorites += `,${id}`;
+  localStorage.setItem('favs', favorites);
+}
+
+const deleteId = (id) => {
+  const idToDelete = id;
+  console.log(idToDelete);
+  const favoritesArr = localStorage.getItem('favs').split(',');
+  favoritesArr.splice(favoritesArr.indexOf(idToDelete), 1).join(',');
+  localStorage.setItem('favs', favoritesArr);
+}
+
+const updateCard = (e) => {
+  const item = e.target;
+  if (Array.from(item.classList).includes('card')){
+    if (item.dataset.fav === 'false') {
+      item.style.backgroundColor = 'red';
+      item.dataset.fav = 'true';
+      addId(item.id);
+    } else if (item.dataset.fav === 'true') {
+      item.style.backgroundColor = 'white';
+      item.dataset.fav = 'false';
+      deleteId(item.id);
+    }
+  }
+}
+ 
+container.addEventListener('click', updateCard);

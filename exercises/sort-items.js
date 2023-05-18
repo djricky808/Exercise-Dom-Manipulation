@@ -12,7 +12,7 @@
  */
 
 // Your code goes here...
-
+const allItems = document.querySelectorAll('.item');
 
 
 /**
@@ -23,7 +23,7 @@
  */
 
 // Your code goes here...
-
+const sortBtn = document.querySelectorAll('.sortBtn');
 
 
 /**
@@ -38,7 +38,36 @@
  */
 
 // Your code goes here...
-
+const sortData = (direction) => {
+  const main = document.getElementById('main');
+  const itemArr = Array.from(allItems);
+  if (direction == 'asc') {
+    const sortAscending = (a, b) =>{
+      if (a.innerHTML < b.innerHTML) {
+        return -1;
+      } else if (a.innerHTML > b.innerHTML) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    itemArr.sort(sortAscending);
+  } else if (direction == 'desc') {
+    const sortDescending = (a, b) =>{
+      if (a.innerHTML < b.innerHTML) {
+        return 1;
+      } else if (a.innerHTML > b.innerHTML) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+    itemArr.sort(sortDescending);
+  }
+  itemArr.forEach((item) => {
+  main.append(item)})
+  
+}
 
 
 /**
@@ -48,6 +77,12 @@
  * The item click must execute/call the following:
  * * Make the sortData function call, assign the item's dataset sortdir property
  */
+for(const elm of sortBtn){
+  elm.addEventListener('click', function() {
+    const sortDir = this.dataset.sortdir;
+    sortData(sortDir);
+  })
+}
 
 // Your code goes here...
 
