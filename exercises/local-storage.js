@@ -40,27 +40,25 @@
 // Your code goes here...
 const container = document.querySelector('.cardsContainer');
 
-function redCard (elm) {
-  for(elm of container.children){
-    if (localStorage.getItem('favs') && localStorage.getItem('favs').split(',').includes(elm.id)) {
+function redCard(elm) {
+  for(elm of container.children) {
+    if(localStorage.getItem('favs') && localStorage.getItem('favs').split(',').includes(elm.id)) {
       elm.style.backgroundColor = 'red';
       elm.dataset.fav = 'true';
-    }
-    
+    }  
   }
 }
 
 redCard ();
 
 const addId = (id) => {
-  let favorites = localStorage.getItem('favs');
-  favorites += `,${id}`;
+  let curStorage = localStorage.getItem('favs');
+  let favorites = curStorage ? curStorage += `,${id}` : `${id}`;
   localStorage.setItem('favs', favorites);
 }
 
 const deleteId = (id) => {
   const idToDelete = id;
-  console.log(idToDelete);
   const favoritesArr = localStorage.getItem('favs').split(',');
   favoritesArr.splice(favoritesArr.indexOf(idToDelete), 1).join(',');
   localStorage.setItem('favs', favoritesArr);
@@ -69,16 +67,14 @@ const deleteId = (id) => {
 const updateCard = (e) => {
   const item = e.target;
   if (Array.from(item.classList).includes('card')){
-    if (item.dataset.fav === 'false') {
-      item.style.backgroundColor = 'red';
-      item.dataset.fav = 'true';
-      addId(item.id);
-    } else if (item.dataset.fav === 'true') {
-      item.style.backgroundColor = 'white';
-      item.dataset.fav = 'false';
-      deleteId(item.id);
-    }
+    const colorArr = ['red', 'white'];
+    const dataArr = ['true', 'false'];
+    const params = item.dataset.fav === 'false'
+    ? [colorArr, dataArr, addId(item.id)]
+    : [colorArr.reverse(), dataArr.reverse(), deleteId(item.id)];
+    item.style.backgroundColor = params[0][0];
+    item.dataset.fav = params[1][0];
+    params[2];
   }
 }
- 
 container.addEventListener('click', updateCard);

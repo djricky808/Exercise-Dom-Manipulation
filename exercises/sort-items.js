@@ -41,29 +41,16 @@ const sortBtn = document.querySelectorAll('.sortBtn');
 const sortData = (direction) => {
   const main = document.getElementById('main');
   const itemArr = Array.from(allItems);
-  if (direction == 'asc') {
-    const sortAscending = (a, b) =>{
+  const sortItems = (a, b) =>{
       if (a.innerHTML < b.innerHTML) {
-        return -1;
+        return direction === 'asc' ? -1 : 1;
       } else if (a.innerHTML > b.innerHTML) {
-        return 1;
+        return direction === 'asc' ? 1 : -1;
       } else {
         return 0;
       }
     }
-    itemArr.sort(sortAscending);
-  } else if (direction == 'desc') {
-    const sortDescending = (a, b) =>{
-      if (a.innerHTML < b.innerHTML) {
-        return 1;
-      } else if (a.innerHTML > b.innerHTML) {
-        return -1;
-      } else {
-        return 0;
-      }
-    }
-    itemArr.sort(sortDescending);
-  }
+  itemArr.sort(sortItems);
   itemArr.forEach((item) => {
   main.append(item)})
   

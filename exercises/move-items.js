@@ -49,17 +49,16 @@ const favs = document.getElementById('favs');
 // Your code goes here
 const updateCollections = (id, direction) => {
   const selectedId = document.getElementById(id);
-  if (direction == 'toMain') {
-    favs.removeChild(selectedId);
-    main.appendChild(selectedId);
-    selectedId.children[0].classList.remove('fa-heart-crack');
-    selectedId.children[0].classList.add('fa-heart-circle-plus');
-  } else if (direction == 'toFavs') {
-    main.removeChild(selectedId);
-    favs.appendChild(selectedId);
-    selectedId.children[0].classList.remove('fa-heart-circle-plus');
-    selectedId.children[0].classList.add('fa-heart-crack');
-  }
+  const iconArr = ['fa-heart-crack', 'fa-heart-circle-plus'];
+  const containerArr = [favs, main];
+  const params = direction === 'toMain'
+    ? [containerArr, iconArr]
+    : [containerArr.reverse(), iconArr.reverse()];
+  params[0][0].removeChild(selectedId);
+  params[0][1].appendChild(selectedId);
+  selectedId.children[0].classList.remove(params[1][0]);
+  selectedId.children[0].classList.add(params[1][1]);
+
 }
 
 
@@ -80,11 +79,8 @@ const updateCollections = (id, direction) => {
 // Your code goes here...
 for (const elm of allItems) {
   elm.addEventListener('click', function() {
-    if (elm.parentElement.id == 'main'){
-      updateCollections(elm.id, 'toFavs');
-    } else if (elm.parentElement.id == 'favs') {
-      updateCollections(elm.id, 'toMain');
-    }
-  })
+    const value = elm.parentElement.id === 'main' ? 'toFavs' : 'toMain';
+    updateCollections(elm.id, value);
+  });
 }
 
